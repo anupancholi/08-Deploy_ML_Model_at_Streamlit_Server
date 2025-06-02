@@ -67,6 +67,7 @@ st.markdown(
         bottom: 20px;
         left: 20px;
         z-index: 100;
+        max-width: 300px;
     }
     .footer {
         font-size: 0.9rem;
@@ -79,10 +80,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.markdown('<div class="title">A tinyBERT sentiment analysis model hosted with Streamlit and AWS S3</div>',
+st.markdown('<div class="title">Machine Learning Model Deployment at the Server</div>',
             unsafe_allow_html=True)
-st.markdown('<div class="subtitle">creared by Anurodh Pancholi</div>',
-            unsafe_allow_html=True)
+st.markdown('<div class="subtitle">A tinyBERT sentiment analysis model hosted with Streamlit and AWS S3</div>', unsafe_allow_html=True)
 
 text = st.text_area("Enter Your Review", height=130,
                     placeholder="Type your review here...")
@@ -113,8 +113,25 @@ if st.button("Predict Sentiment"):
         except Exception as e:
             st.error(f"❌ Failed to run prediction: {e}")
 
-# Bottom-left download button
-st.markdown('<div class="download-btn-container">', unsafe_allow_html=True)
+# Bottom-left info bar + download button
+st.markdown(
+    """
+    <div class="download-btn-container">
+        <div style="
+            background-color: #dbeeff;
+            border-left: 5px solid #2980B9;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #2C3E50;
+        ">
+            ℹ️ <strong>For Developers:</strong> This model download is intended for backend or debugging use only.
+        </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 if st.button("⬇️ Download Model"):
     with st.spinner("Downloading model from S3... Please wait!"):
         try:
@@ -122,7 +139,8 @@ if st.button("⬇️ Download Model"):
             st.success("Model downloaded successfully!")
         except Exception as e:
             st.error(f"Failed to download model: {e}")
-st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
 st.markdown(
