@@ -67,7 +67,6 @@ st.markdown(
         bottom: 20px;
         left: 20px;
         z-index: 100;
-        max-width: 300px;
     }
     .footer {
         font-size: 0.9rem;
@@ -114,55 +113,16 @@ if st.button("Predict Sentiment"):
         except Exception as e:
             st.error(f"❌ Failed to run prediction: {e}")
 
-# Bottom-left info bar + download button as a unified section
-download_container = st.empty()
-
-download_container.markdown(
-    """
-    <div class="download-btn-container">
-        <div style="
-            background-color: #dbeeff;
-            border-left: 5px solid #2980B9;
-            padding: 10px 15px 20px 15px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            color: #2C3E50;
-        ">
-            ℹ️ <strong>For Developers:</strong> This model download is intended for backend or debugging use only.
-            <br><br>
-            <form action="#" method="post">
-                <button style="
-                    margin-top: 5px;
-                    background-color: #2980B9;
-                    color: white;
-                    padding: 8px 16px;
-                    border: none;
-                    border-radius: 6px;
-                    font-weight: 600;
-                    cursor: pointer;
-                " type="submit">⬇️ Download Model</button>
-            </form>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-# Button logic outside to handle download
-if st.session_state.get("download_clicked") is None:
-    st.session_state.download_clicked = False
-
-if st.button("⬇️ Download Model", key="download_model_logic_button"):
+# Bottom-left download button
+st.markdown('<div class="download-btn-container">', unsafe_allow_html=True)
+if st.button("⬇️ Download Model(for developers use only)"):
     with st.spinner("Downloading model from S3... Please wait!"):
         try:
             download_dir(local_path, s3_prefix)
             st.success("Model downloaded successfully!")
         except Exception as e:
             st.error(f"Failed to download model: {e}")
-
-
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
 st.markdown(
