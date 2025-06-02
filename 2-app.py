@@ -35,19 +35,22 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+    body {
+        background-color: #f9f9f9;
+    }
     .title {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #4B8BBE;
+        color: #2C3E50;
         margin-bottom: 10px;
     }
     .subtitle {
         font-size: 1.2rem;
-        color: #306998;
+        color: #7F8C8D;
         margin-bottom: 30px;
     }
     .stButton>button {
-        background-color: #4B8BBE;
+        background-color: #2980B9;
         color: white;
         padding: 0.6rem 1.5rem;
         border-radius: 8px;
@@ -56,8 +59,14 @@ st.markdown(
         transition: background-color 0.3s ease;
     }
     .stButton>button:hover {
-        background-color: #306998;
+        background-color: #1C5980;
         cursor: pointer;
+    }
+    .download-btn-container {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 100;
     }
     .footer {
         font-size: 0.9rem;
@@ -70,24 +79,13 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.markdown('<div class="title">Machine Learning Model Deployment at the Server</div>',
+st.markdown('<div class="title">A tinyBERT sentiment analysis model hosted with Streamlit and AWS S3</div>',
             unsafe_allow_html=True)
-st.markdown('<div class="subtitle">A tinyBERT sentiment analysis model hosted with Streamlit and AWS S3</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">creared by Anurodh Pancholi</div>',
+            unsafe_allow_html=True)
 
-col1, col2 = st.columns([1, 2])
-
-with col1:
-    if st.button("⬇️ Download Model"):
-        with st.spinner("Downloading model from S3... Please wait!"):
-            try:
-                download_dir(local_path, s3_prefix)
-                st.success("Model downloaded successfully!")
-            except Exception as e:
-                st.error(f"Failed to download model: {e}")
-
-with col2:
-    text = st.text_area("Enter Your Review", height=130,
-                        placeholder="Type your review here...")
+text = st.text_area("Enter Your Review", height=130,
+                    placeholder="Type your review here...")
 
 st.markdown("---")
 
@@ -115,10 +113,22 @@ if st.button("Predict Sentiment"):
         except Exception as e:
             st.error(f"❌ Failed to run prediction: {e}")
 
+# Bottom-left download button
+st.markdown('<div class="download-btn-container">', unsafe_allow_html=True)
+if st.button("⬇️ Download Model"):
+    with st.spinner("Downloading model from S3... Please wait!"):
+        try:
+            download_dir(local_path, s3_prefix)
+            st.success("Model downloaded successfully!")
+        except Exception as e:
+            st.error(f"Failed to download model: {e}")
+st.markdown('</div>', unsafe_allow_html=True)
+
+# Footer
 st.markdown(
     """
     <div class="footer">
-    Full Streamlit Code Repository: <a href="https://github.com/laxmimerit/streamlit-tutorials" target="_blank">GitHub</a>
+    Full Streamlit Code Repository: <a href="https://github.com/anupancholi/08-Deploy_ML_Model_at_Streamlit_Server" target="_blank">GitHub</a>
     </div>
     """,
     unsafe_allow_html=True,
